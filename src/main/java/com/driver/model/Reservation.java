@@ -1,13 +1,26 @@
 package com.driver.model;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
 
 @Entity
+
 public class Reservation {
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
+
+    private int numberOfHours;
+
+    @OneToOne(mappedBy = "reservation")
+    private Payment payment;
 
     @ManyToOne
     @JoinColumn
@@ -17,17 +30,31 @@ public class Reservation {
     @JoinColumn
     private Spot spot;
 
-    @OneToOne(mappedBy = "reservation",cascade = CascadeType.ALL)
-    private Payment payment;
 
-    private int numberOfHours;
-
-    public int getId() {
-        return id;
+    public Reservation(int numberOfHours, Payment payment, User user, Spot spot) {
+        this.numberOfHours = numberOfHours;
+        this.payment = payment;
+        this.user = user;
+        this.spot = spot;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public Reservation() {
+    }
+
+    public int getNumberOfHours() {
+        return numberOfHours;
+    }
+
+    public void setNumberOfHours(int numberOfHours) {
+        this.numberOfHours = numberOfHours;
+    }
+
+    public Payment getPayment() {
+        return payment;
+    }
+
+    public void setPayment(Payment payment) {
+        this.payment = payment;
     }
 
     public User getUser() {
@@ -44,21 +71,5 @@ public class Reservation {
 
     public void setSpot(Spot spot) {
         this.spot = spot;
-    }
-
-    public Payment getPayment() {
-        return payment;
-    }
-
-    public void setPayment(Payment payment) {
-        this.payment = payment;
-    }
-
-    public int getNumberOfHours() {
-        return numberOfHours;
-    }
-
-    public void setNumberOfHours(int numberOfHours) {
-        this.numberOfHours = numberOfHours;
     }
 }
